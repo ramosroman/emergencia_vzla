@@ -1,6 +1,6 @@
 # Emergencia Venezuela - Pacientes API
 
-API para centralizar listados hospitalarios venezolanos durante emergencias. Voluntarios fotografían listados en hospitales, un modelo de visión por lenguaje (Gemini 2.0 Flash) extrae los datos estructurados, y familiares pueden buscar pacientes por cédula o nombre desde cualquier lugar.
+API para centralizar listados hospitalarios venezolanos durante emergencias. Voluntarios fotografían listados en hospitales, un modelo de visión por lenguaje (Gemini 3.1 Flash) extrae los datos estructurados, y familiares pueden buscar pacientes por cédula o nombre desde cualquier lugar.
 
 ## Stack
 
