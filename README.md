@@ -6,7 +6,7 @@ API para centralizar listados hospitalarios venezolanos durante emergencias. Vol
 
 - **Backend**: Python 3.12+ / FastAPI
 - **Base de datos**: PostgreSQL 16
-- **VLM**: Google Gemini 2.0 Flash (API externa)
+- **VLM**: Google Gemini 3.1 Flash (API externa)
 - **ORM**: SQLAlchemy 2.0 + asyncpg
 - **Validacion**: Pydantic v2
 - **Infraestructura**: Docker Compose
