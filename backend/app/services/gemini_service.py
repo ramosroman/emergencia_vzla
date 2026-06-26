@@ -183,12 +183,13 @@ RESPUESTA ESPERADA:
                   INSTRUCCIÓN FINAL
 ═══════════════════════════════════════════════════════════════
 
-IMPORTANTE: Extrae TODOS los pacientes visibles en la imagen.
+Extrae TODOS los pacientes visibles en la imagen.
 NO te limites a unos pocos. Si hay 30 pacientes en el listado,
 debes devolver los 30. No hagas "muestras" ni resúmenes.
 
 Si un campo no está disponible para un paciente (ej: no tiene
-cédula visible), déjalo como valor null en lugar de omitirlo.
+cédula visible), devuelve el objeto CampoExtraido con valor null:
+{"valor": null, "confianza": 0.0, "raw_text": ""}
 
 Analiza la imagen ahora y devuelve SOLO el JSON.
 """

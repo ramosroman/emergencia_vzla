@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class CampoExtraido(BaseModel):
@@ -23,6 +23,22 @@ class PacienteExtraido(BaseModel):
     estado_salud: CampoExtraido = CampoExtraido()
     contacto: CampoExtraido = CampoExtraido()
     notas: str | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def _coerce_nulls(cls, values: dict) -> dict:
+        """Convierte null/{} de Gemini al formato esperado por Pydantic."""
+        # Campos CampoExtraido: convertir None a {} para que Pydantic use defaults
+        campo_fields = {"nombre", "cedula", "hospital", "piso",
+                        "habitacion", "edad", "estado_salud", "contacto"}
+        for field_name in campo_fields:
+            if field_name in values and values[field_name] is None:
+                values[field_name] = {}
+        # notas: convertir null o {} (Gemini confunde el tipo) a None
+        if "notas" in values:
+            if values["notas"] is None or values["notas"] == {}:
+                values["notas"] = None
+        return values
 
 
 class GeminiResponse(BaseModel):
