@@ -134,6 +134,74 @@ backend/
   .env.example
 ```
 
+## Migrar a Supabase (cloud)
+
+Para llevar la base de datos a la nube con Supabase (gratis, 500MB):
+
+### 1. Crear proyecto en Supabase
+
+- Ve a [supabase.com](https://supabase.com) e inicia sesion
+- Clic en **New project**
+- Elige una region cercana (US East o South America)
+- Guarda la **Database password** que generes
+
+### 2. Obtener la conexion
+
+Ve a **Project Settings > Database > Connection string**:
+
+- Usa la opcion **URI** con **Pooled connection** (puerto **6543**)
+- Agrega `?prepared_statement_cache_size=0` al final (necesario para PgBouncer)
+
+```env
+DATABASE_URL=postgresql+asyncpg://postgres:tu_password@db.xxxxxxxxxxxxx.supabase.co:6543/postgres?prepared_statement_cache_size=0
+```
+
+### 3. Verificar extensiones
+
+Supabase incluye `uuid-ossp` preinstalado. La app lo verifica sola al iniciar.
+
+### 4. Actualizar .env
+
+Edita `backend/.env` y reemplaza `DATABASE_URL` con la string de Supabase.
+
+### 5. Iniciar la app
+
+Ya no necesitas Docker para PostgreSQL. Solo construye y ejecuta la app:
+
+```bash
+cd backend
+
+# Opcion A: con Docker (sin PostgreSQL local)
+docker build -t emergencia-api .
+docker run -p 8000:8000 --env-file .env emergencia-api
+
+# Opcion B: directo con Python (si tienes Python 3.12+)
+pip install -r requirements.txt
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+Las tablas se crean automaticamente al iniciar la app (`init_db()`).
+
+### 6. Verificar
+
+```bash
+curl http://localhost:8000/health
+# → {"status": "ok"}
+```
+
+### Notas sobre Supabase free tier
+
+| Recurso | Limite |
+|---------|--------|
+| Base de datos | 500 MB |
+| Conexiones simultaneas | 2 (PgBouncer, puerto 6543) |
+| Ancho de banda | 2 GB/mes |
+| Autenticacion | 50,000 usuarios/mes |
+| Backups | Diarios (7 dias retencion) |
+
+> Para conexiones de administracion (migraciones, backups), usa el puerto 5432 (directo).
+> Para la app en produccion, usa siempre el puerto 6543 (pooled).
+
 ## Licencia
 
 MIT
